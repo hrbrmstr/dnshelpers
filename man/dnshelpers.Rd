@@ -4,8 +4,14 @@
 \name{dnshelpers}
 \alias{dnshelpers}
 \alias{dnshelpers-package}
-\title{...}
+\title{Tools to Process 'DNS' Response Data}
 \description{
+The internet domain name system ('DNS') supports a wide variety
+of response types besides simple 'IP' addresses or domain names. Methods are
+provided to process a myriad of other response data elements including
+'DMARC' ('TXT'), 'SPF' ('TXT'), 'MX' and more.
+}
+\details{
 \itemize{
 \item URL: \url{https://gitlab.com/hrbrmstr/dnshelpers}
 \item BugReports: \url{https://gitlab.com/hrbrmstr/dnshelpers/issues}

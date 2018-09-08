@@ -4,7 +4,11 @@ output: rmarkdown::github_document
 
 # dnshelpers
 
+Tools to Process 'DNS' Response Data
+
 ## Description
+
+The internet domain name system ('DNS') supports a wide variety of response types besides simple 'IP' addresses or domain names. Methods are provided to process a myriad of other response data elements including 'DMARC' ('TXT'), 'SPF' ('TXT'), 'MX' and more.
 
 ## What's Inside The Tin
 

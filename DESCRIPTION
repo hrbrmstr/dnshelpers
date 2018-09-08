@@ -1,6 +1,6 @@
 Package: dnshelpers
 Type: Package
-Title: dnshelpers title goes here otherwise CRAN checks fail
+Title: Tools to Process 'DNS' Response Data
 Version: 0.1.0
 Date: 2018-09-08
 Authors@R: c(
@@ -8,17 +8,23 @@ Authors@R: c(
            comment = c(ORCID = "0000-0001-5670-2640"))
   )
 Maintainer: Bob Rudis <bob@rud.is>
-Description: A good description goes here otherwise CRAN checks fail.
+Description: The internet domain name system ('DNS') supports a wide variety
+    of response types besides simple 'IP' addresses or domain names. Methods are
+    provided to process a myriad of other response data elements including
+    'DMARC' ('TXT'), 'SPF' ('TXT'), 'MX' and more.
 URL: https://gitlab.com/hrbrmstr/dnshelpers
 BugReports: https://gitlab.com/hrbrmstr/dnshelpers/issues
 Encoding: UTF-8
-License: AGPL
+License: MIT + file LICENSE
+SystemRequirements: C++11; libspf2 (<https://github.com/shevek/libspf2>)
 Suggests:
     testthat,
     covr
 Depends:
     R (>= 3.2.0)
 Imports:
-    httr,
-    jsonlite
+    magrittr,
+    stringi,
+    Rcpp
 RoxygenNote: 6.0.1.9000
+LinkingTo: Rcpp

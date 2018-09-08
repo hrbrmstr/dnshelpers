@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+set -x
+
+libtoolize --copy --install --force
+aclocal -I config --install --force
+autoheader
+automake --gnu --add-missing
+autoconf
