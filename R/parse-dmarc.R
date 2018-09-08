@@ -7,7 +7,9 @@
 parse_dmarc <- function(x) {
 
   map_df(x, ~{
-    .x <- trimws(gsub('[\\\\"]+', " ", .x))
+    .x <- stri_replace_all_regex(.x, '[[:space:]"]+', " ")
+    .x <- stri_replace_all_regex(.x, '[[:space:]]+', " ")
+    .x <- stri_trim_both(.x)
     strsplit(.x, ";[[:space:]]*") %>%
       unlist() %>%
       map(strsplit, "=") %>%

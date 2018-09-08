@@ -3,7 +3,10 @@
   orig <- x
 
   x <- stri_trans_tolower(x)
-  x <- stri_replace_all_regex(x, "^[[:punct:][[:space:]]]+|[[:punct:][:space:]]+$", "")
+  x <- stri_replace_all_regex(x, "^[[:punct:][[:space:]]]+|[[:punct:][:space:]]+$", " ")
+  x <- stri_replace_all_regex(x, '[[:space:]"]+', " ")
+  x <- stri_replace_all_regex(x, '[[:space:]]+', " ")
+  x <- stri_trim_both(x)
 
   if (!stri_detect_regex(x, "^v=spf1")) {
 
