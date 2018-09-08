@@ -1,4 +1,0 @@
-CXX_STD = CXX11
-PKG_CXXFLAGS = -I./include/spf2 -I.
-PKG_CFLAGS =
-PKG_LIBS = -L. -lpthread -lresolv ./lib/libspf2.a

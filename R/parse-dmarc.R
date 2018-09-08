@@ -7,14 +7,15 @@
 parse_dmarc <- function(x) {
 
   map_df(x, ~{
+    .x <- trimws(gsub('[\\\\"]+', " ", .x))
     strsplit(.x, ";[[:space:]]*") %>%
       unlist() %>%
       map(strsplit, "=") %>%
       map(~{
         as.list(
           set_names(
-            gsub("\\\\", "", .x[[1]][2]),  # values
-            .x[[1]][1] # names
+            .x[[1]][2], # values
+            .x[[1]][1]  # names
           )
         )
       }) %>%

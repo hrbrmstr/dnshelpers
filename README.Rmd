@@ -14,6 +14,11 @@ The internet domain name system ('DNS') supports a wide variety of response type
 
 The following functions are implemented:
 
+- `parse_dmarc`:	Parse DMARCv1 DNS data reponses into a data frame
+- `parse_mx`:	Parse MX DNS data reponses into a data frame
+- `parse_soa`:	Parse SOA DNS data reponses into a data frame
+- `parse_spf`:	Parse SPF TXT DNS data reponses into a list
+
 ## Installation
 
 ```{r eval=FALSE}
@@ -28,9 +33,30 @@ options(width=120)
 
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(dnshelpers)
+library(gdns)
+library(tidyverse)
 
 # current verison
 packageVersion("dnshelpers")
 
 ```
 
+```{r}
+targets <- c("senate.gov", "equifax.com", "rapid7.com")
+
+bulk_query(targets, "MX") %>% 
+  bind_cols(parse_mx(.$data))
+
+bulk_query(targets, "SOA") %>% 
+  bind_cols(parse_soa(.$data))
+
+bulk_query(sprintf("_dmarc.%s", targets), "TXT") %>% 
+  filter(str_detect(str_to_lower(data), "dmarc1")) %>% 
+  bind_cols(parse_dmarc(.$data))
+
+bulk_query(targets, "TXT") %>% 
+  filter(str_detect(str_to_lower(data), "v=spf")) %>% 
+  .$data %>% 
+  parse_spf() %>% 
+  str()
+```

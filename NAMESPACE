@@ -2,8 +2,8 @@
 
 export("%>%")
 export(parse_dmarc)
+export(parse_mx)
+export(parse_soa)
 export(parse_spf)
 import(stringi)
-importFrom(Rcpp,sourceCpp)
 importFrom(magrittr,"%>%")
-useDynLib(dnshelpers)

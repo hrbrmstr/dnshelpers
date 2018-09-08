@@ -13,6 +13,4 @@
 #' @docType package
 #' @author Bob Rudis (bob@@rud.is)
 #' @import stringi
-#' @useDynLib dnshelpers
-#' @importFrom Rcpp sourceCpp
 NULL

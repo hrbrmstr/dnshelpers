@@ -16,7 +16,6 @@ URL: https://gitlab.com/hrbrmstr/dnshelpers
 BugReports: https://gitlab.com/hrbrmstr/dnshelpers/issues
 Encoding: UTF-8
 License: MIT + file LICENSE
-SystemRequirements: C++11; libspf2 (<https://github.com/shevek/libspf2>)
 Suggests:
     testthat,
     covr
@@ -24,7 +23,5 @@ Depends:
     R (>= 3.2.0)
 Imports:
     magrittr,
-    stringi,
-    Rcpp
+    stringi
 RoxygenNote: 6.0.1.9000
-LinkingTo: Rcpp
