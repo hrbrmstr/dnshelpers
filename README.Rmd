@@ -34,6 +34,7 @@ options(width=120)
 ```{r message=FALSE, warning=FALSE, error=FALSE}
 library(dnshelpers)
 library(gdns)
+library(worldtilegrid)
 library(tidyverse)
 
 # current verison
@@ -41,7 +42,9 @@ packageVersion("dnshelpers")
 
 ```
 
-```{r}
+### Basics
+
+```{r message=FALSE, warning=FALSE, error=FALSE}
 targets <- c("senate.gov", "equifax.com", "rapid7.com")
 
 bulk_query(targets, "MX") %>% 
@@ -59,4 +62,75 @@ bulk_query(targets, "TXT") %>%
   .$data %>% 
   parse_spf() %>% 
   str()
+```
+
+### Practical Example (DMARC)
+
+Let's see how the [world's colleges](https://raw.githubusercontent.com/Hipo/university-domains-list/master/world_universities_and_domains.json) rate DMARC-wise.
+
+We'll take ^^ JSON and lookup DMARC records via the `zdnsr` package (`hrbrmstr/zdnsr`). 
+
+```{r message=FALSE, warning=FALSE, error=FALSE, fig.width=9, fig.height=8, fig.retina=2}
+(u_dmarc <- readRDS("ghdat/uinv_dmarc.rds")) # previously read in
+
+## Done previously:
+# zdnsr::zdns_query(u_dmarc$dmarc, output_file = "somefile.json", query_type = "TXT")  
+# db <- sergeant::src_drill()
+# 
+# tbl(db, "(
+# SELECT
+#   b.answers.name AS question,
+#   b.answers.answer AS answer
+# FROM (
+#   SELECT 
+#     FLATTEN(a.data.answers) AS answers
+#   FROM 
+#     dfs.workspace.`/somefile.json` a
+#   WHERE 
+#     (a.status = 'NOERROR')
+# ) b
+# )") %>% 
+#   collect() -> dmarc_recs
+
+(dmarc_recs <- readRDS("ghdat/dmarc-recs.rds")) # what was previously looked up ^^
+
+left_join( # join them together
+  u_dmarc, 
+  bind_cols(
+    dmarc_recs,
+    parse_dmarc(dmarc_recs$answer) # parse the raw DMARC records
+  ),
+  by = c("dmarc"="question")
+) %>% 
+  mutate(p = ifelse(is.na(p), "NO_DMARC", p)) %>%  
+  print() -> processed_dmarc
+
+count(processed_dmarc, alpha_two_code, p) %>% # do a bunch of cleanup & re-org to get policy % by country
+  spread(p, n) %>%
+  gather(p, n, -alpha_two_code) %>% 
+  mutate(n = ifelse(is.na(n), 0, n)) %>% 
+  group_by(alpha_two_code) %>% 
+  mutate(pct = n/sum(n)) %>% 
+  ungroup() %>% 
+  select(alpha_two_code, p, pct) %>% 
+  spread(p, pct) %>% 
+  gather(measure, value, -alpha_two_code) %>% 
+  mutate(
+    measure = factor( # make the DMARC policy ids a bit nicer for the facets
+      x = measure, 
+      levels = c("NO_DMARC", "none", "quarantine", "reject"),
+      labels = c("No DMARC", "Policy: None", "Policy: Quarantine", "Policy: Reject")
+    )
+  ) %>% 
+  print() %>% 
+  ggplot(aes(country = alpha_two_code, fill = value)) +
+  geom_wtg() +
+  viridis::scale_fill_viridis(name = NULL, direction = -1, labels=scales::percent) +
+  facet_wrap(~measure) +
+  coord_equal() +
+  labs(
+    x=NULL, y=NULL, title = "DMARC Usage in Colleges by Country & Policy"
+  ) +
+  hrbrthemes::theme_ipsum_rc(grid="XY") + 
+  theme_enhance_wtg()
 ```

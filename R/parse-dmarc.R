@@ -18,7 +18,7 @@ parse_dmarc <- function(x) {
     } else {
       fields <- stri_split_regex(dmarc_rec, ";[[:space:]]*")[[1]]
       rec <- stri_split_fixed(fields, "=", 2, simplify = TRUE)
-      rec <- as.list(set_names(rec[,2], make.names(rec[,1])))
+      rec <- as.list(set_names(stri_trim_both(rec[,2]), stri_trim_both(rec[,1])))
 
       is_valid <- all(names(rec) %in% .dmarc_keys)
       ok_names <- intersect(.dmarc_keys, names(rec))
