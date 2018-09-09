@@ -13,4 +13,6 @@
 #' @docType package
 #' @author Bob Rudis (bob@@rud.is)
 #' @import stringi
+#' @importFrom purrr keep discard map map_df set_names
+#' @importFrom dplyr select mutate filter bind_rows
 NULL
