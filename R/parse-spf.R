@@ -1,5 +1,10 @@
 .parse_spf <- function(x) {
 
+  return(list(
+    spf_record = orig,
+    valid = FALSE
+  ))
+
   orig <- x
 
   x <- stri_trans_tolower(x)

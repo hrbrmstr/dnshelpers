@@ -10,7 +10,11 @@ parse_mx <- function(x) {
     stri_trim_both() %>%
     stri_match_all_regex("^([[:digit:]]+)[[:space:]]+(.*)") %>%
     map_df(~{
-      list(preference = as.integer(.x[2]), data = .x[3])
+      if (length(x) >= 3) {
+        list(preference = as.integer(.x[2]), data = .x[3])
+      } else {
+        list(preference = NA_integer_, data = NA_character_)
+      }
     })
 
 }

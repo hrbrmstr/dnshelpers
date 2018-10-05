@@ -2,6 +2,7 @@
 
 export("%>%")
 export(parse_dmarc)
+export(parse_mta_sts)
 export(parse_mx)
 export(parse_soa)
 export(parse_spf)

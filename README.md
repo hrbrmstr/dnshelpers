@@ -15,6 +15,7 @@ including ‘DMARC’ (‘TXT’), ‘SPF’ (‘TXT’), ‘MX’ and more.
 The following functions are implemented:
 
   - `parse_dmarc`: Parse DMARCv1 DNS data reponses into a data frame
+  - `parse_mta_sts`: Parse MTA-STS DNS data reponses into a list
   - `parse_mx`: Parse MX DNS data reponses into a data frame
   - `parse_soa`: Parse SOA DNS data reponses into a data frame
   - `parse_spf`: Parse SPF TXT DNS data reponses into a list

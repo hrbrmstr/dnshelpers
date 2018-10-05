@@ -13,7 +13,9 @@ parse_dmarc <- function(x) {
   x <- stri_trim_both(x)
 
   map_df(x, function(dmarc_rec) {
-    if (!stri_detect_fixed(dmarc_rec, "v=dmarc1")) {
+    if (is.na(x)) {
+      list(is_valid = FALSE)
+    } else if (!stri_detect_fixed(dmarc_rec, "v=dmarc1")) {
       list(is_valid = FALSE)
     } else {
       fields <- stri_split_regex(dmarc_rec, ";[[:space:]]*")[[1]]
