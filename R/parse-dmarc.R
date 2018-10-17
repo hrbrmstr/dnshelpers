@@ -13,7 +13,7 @@ parse_dmarc <- function(x) {
   x <- stri_trim_both(x)
 
   map_df(x, function(dmarc_rec) {
-    if (is.na(x)) {
+    if (is.na(dmarc_rec)) {
       list(is_valid = FALSE)
     } else if (!stri_detect_fixed(dmarc_rec, "v=dmarc1")) {
       list(is_valid = FALSE)
